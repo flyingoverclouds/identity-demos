@@ -1,0 +1,25 @@
+﻿@page
+@model IdentityInfoModel
+@{
+    ViewData["Title"] = "Identity Info";
+}
+<hr />
+<h1>Current user identity info :</h1>
+
+@if (User?.Identity?.IsAuthenticated==true)
+{
+    <span style="color: green"><b>User is authenticated !</b></span>
+    <b> TODO : display current identity details</b>
+} else
+{
+    <span style="color: orange"><b>No identity available</b> : User is not authenticated</span>
+}
+
+
+<hr />
+<h1>ApiBackend user identity info : </h1>
+<div>
+<pre>
+    @Model.ApiBackendIdentityInfo
+</pre>
+</div>

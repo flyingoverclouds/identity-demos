@@ -1,0 +1,19 @@
+﻿@page
+@model EnvVariablesModel
+@{
+    ViewData["Title"] = "Environment variables";
+}
+<h1>@ViewData["Title"]</h1>
+
+<hr/>
+<h2>WebFrontend environment variables : </h2>
+<div>@Model.FrontEnvironmentVariables</div>
+
+<hr />
+<h2>ApiBackend environment variables : </h2>
+<div>
+<pre>
+@Model.ApiEnvironmentVariables
+</pre>
+</div>
+
