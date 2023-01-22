@@ -1,2 +1,2 @@
 # identity-demos
-Some .ent project to demonstrate identity in application
+Few .Net projects to demonstrate identity in application
