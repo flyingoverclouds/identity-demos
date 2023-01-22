@@ -1,0 +1,19 @@
+﻿@page
+@model HeadersModel
+@{
+    ViewData["Title"] = "HTTP Headers";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<h2>WebFrontend headers : </h2>
+<div>
+
+            @foreach (var hname in Request.Headers.Keys) {
+                <b> @hname = </b> 
+                <span>@Request.Headers[hname]</span>
+                <br/>
+            }
+
+</div>
+
