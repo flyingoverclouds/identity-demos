@@ -10,13 +10,15 @@ namespace WebFrontend.Pages
         public string ApiEnvironmentVariables { get; set; } = "";
         public string FrontEnvironmentVariables { get; set; }
 
+        private IConfiguration _configuration;
 
-        public EnvVariablesModel(ILogger<EnvVariablesModel> logger)
+        public EnvVariablesModel(ILogger<EnvVariablesModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
             StringBuilder sb = new StringBuilder();
             foreach (var evname in Environment.GetEnvironmentVariables().Keys)
@@ -28,18 +30,16 @@ namespace WebFrontend.Pages
             }
             FrontEnvironmentVariables = sb.ToString();
 
-            // TODO : call API 
-            //try
-            //{
-            //    _logger.LogInformation($"TodoServiceUri={TodoServiceUri}");
-            //    HttpClient hc = new HttpClient();
-            //    ApiEnvironmentVariables = await hc.GetStringAsync($"{TodoServiceUri}/api/Help/Env");
-            //}
-            //catch (Exception ex)
-            //{
-            //    ApiEnvironmentVariables = $"Exception while calling {TodoServiceUri}/api/Help/Env : {ex.Message}";
-            //    _logger.LogError(ex, ApiEnvironmentVariables);
-            //}
+            try
+            {
+                HttpClient hc = new HttpClient();
+                ApiEnvironmentVariables = await hc.GetStringAsync($"{_configuration.GetValue<string>("ApiBackendURL")}/EnvVariables");
+            }
+            catch (Exception ex)
+            {
+                ApiEnvironmentVariables = $"Exception while calling {_configuration.GetValue<string>("ApiBackendURL")}/EnvVariables : {ex.Message}";
+                _logger.LogError(ex, ApiEnvironmentVariables);
+            }
 
 
         }

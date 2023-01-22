@@ -1,4 +1,6 @@
+using System;
 using System.Text;
+using System.Xml.Linq;
 
 namespace ApiBackend
 {
@@ -23,12 +25,10 @@ namespace ApiBackend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
-
+            // API method to return all environment  variables
             app.MapGet("/EnvVariables", (HttpContext httpContext) =>
             {
                 StringBuilder sb = new StringBuilder();
@@ -40,27 +40,17 @@ namespace ApiBackend
                     sb.AppendLine($"{evname.ToString()}={evValue}");
                 }
                 return sb.ToString();
-            }).WithName("GetEnvironmentVariables");
+            }).WithName("GetEnvVariables");
 
-
-        //    var summaries = new[]
-        //    {
-        //    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        //};
-
-        //    app.MapGet("/weatherforecast", (HttpContext httpContext) =>
-        //    {
-        //        var forecast = Enumerable.Range(1, 5).Select(index =>
-        //            new WeatherForecast
-        //            {
-        //                Date = DateTime.Now.AddDays(index),
-        //                TemperatureC = Random.Shared.Next(-20, 55),
-        //                Summary = summaries[Random.Shared.Next(summaries.Length)]
-        //            })
-        //            .ToArray();
-        //        return forecast;
-        //    })
-        //    .WithName("GetWeatherForecast");
+            // API method to return all headers available in httpcontext
+            app.MapGet("/Headers", (HttpContext httpContext) =>
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var hname in httpContext.Request.Headers.Keys) {
+                    sb.AppendLine($"{hname} = {httpContext.Request.Headers[hname]}");
+                }
+                return sb.ToString();
+            }).WithName("GetHeaders");
 
             app.Run();
         }

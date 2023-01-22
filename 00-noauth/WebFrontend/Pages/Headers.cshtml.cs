@@ -8,23 +8,28 @@ namespace WebFrontend.Pages
     {
         private readonly ILogger<HeadersModel> _logger;
 
+        public string ApiHeaders { get; set; } = "** Not available **";
 
-        public HeadersModel(ILogger<HeadersModel> logger)
+        private IConfiguration _configuration;
+        public HeadersModel(ILogger<HeadersModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            
-            StringBuilder sb = new StringBuilder();
-            foreach (var hname in Request.Headers.Keys)
+            try
             {
-                var evValue = Request.Headers[hname];
-                //if (evValue.EndsWith("==") || evname.ToString().ToLower().Contains("key"))
-                //    evValue = evValue.Substring(0, Math.Min(evValue.Length, 5)) + "**REDACTED**";
-                sb.AppendLine($"<b>{hname.ToString()}</b>={evValue}<br/>");
+                HttpClient hc = new HttpClient();
+                ApiHeaders = await hc.GetStringAsync($"{_configuration.GetValue<string>("ApiBackendURL")}/Headers");
             }
+            catch (Exception ex)
+            {
+                ApiHeaders= $"Exception while calling {_configuration.GetValue<string>("ApiBackendURL")}/Headers: {ex.Message}";
+                _logger.LogError(ex, ApiHeaders);
+            }
+
 
         }
     }

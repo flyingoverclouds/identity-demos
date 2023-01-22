@@ -7,9 +7,15 @@ namespace WebFrontend.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private IConfiguration _configuration;
+
+        public string ApiBackendUrl {  get; set; }
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
+
+            this.ApiBackendUrl = _configuration.GetValue<string>("ApiBackendURL");
         }
 
         public void OnGet()
