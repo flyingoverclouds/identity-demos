@@ -1,8 +1,32 @@
 ﻿@page
-@model PrivacyModel
+@model ManagedIdentityModel
 @{
     ViewData["Title"] = "Managed Identity Info";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>TODO : display information of app managed identity.</p>
+<p>
+    @if (Model.HasManagedIdentity)
+    {
+    <div>
+        <span style="color: green"> Managed identity available !  </span>
+        <br/>
+        <span><b> Identity endpoint : </b> @Model.ManagedIdentityEndpoint </span>
+        <br>
+            <span><b> Identity Information for ressource @Model.ResourceUri : </b> </span><br>
+            <div style="margin-left: 20px;">
+                @Model.ManagedIdentityInfo
+            </div>
+        <br/>
+
+    </div>
+    }
+    else
+    {
+            <div>
+                <span style="color: orange"> No ManagedIdentity configured for this app </span>
+            </div>
+    }
+
+
+</p>
