@@ -7,8 +7,17 @@
 
 <hr/>
 <h2>WebFrontend environment variables : </h2>
-<div>@Model.FrontEnvironmentVariables</div>
-
+<div>
+@foreach (var vname in System.Environment.GetEnvironmentVariables().Keys)
+{
+    <b> @vname = </b>
+        var evValue = Environment.GetEnvironmentVariable(vname.ToString());
+         if (evValue.EndsWith("==") || vname.ToString().ToLower().Contains("key"))
+                    evValue = evValue.Substring(0, Math.Min(evValue.Length, 5)) + "**REDACTED**";
+    <span>@evValue</span>
+    <br />
+}
+</div>
 <hr />
 <h2>ApiBackend environment variables : </h2>
 <div>

@@ -8,7 +8,6 @@ namespace WebFrontend.Pages
     {
         private readonly ILogger<EnvVariablesModel> _logger;
         public string ApiEnvironmentVariables { get; set; } = "";
-        public string FrontEnvironmentVariables { get; set; }
 
         private IConfiguration _configuration;
 
@@ -20,16 +19,6 @@ namespace WebFrontend.Pages
 
         public async Task OnGet()
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var evname in Environment.GetEnvironmentVariables().Keys)
-            {
-                var evValue = Environment.GetEnvironmentVariable(evname.ToString());
-                if (evValue.EndsWith("==") || evname.ToString().ToLower().Contains("key"))
-                    evValue = evValue.Substring(0, Math.Min(evValue.Length, 5)) + "**REDACTED**";
-                sb.AppendLine($"{evname.ToString()}={evValue}");
-            }
-            FrontEnvironmentVariables = sb.ToString();
-
             try
             {
                 HttpClient hc = new HttpClient();
